@@ -11,6 +11,7 @@ namespace EFCoreEmber
     public class GameShopDataContext : DbContext
     {
         public DbSet<Player> Players { get; set; }
+        public DbSet<Address> Address { get; set; }
         public GameShopDataContext(DbContextOptions<GameShopDataContext> options) : base(options)
         {
             
@@ -21,6 +22,7 @@ namespace EFCoreEmber
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new PlayerConfiguration());
             base.OnModelCreating(modelBuilder);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
