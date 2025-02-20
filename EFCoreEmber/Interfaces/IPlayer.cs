@@ -9,10 +9,10 @@ namespace EFCoreEmber.Repositories
 {
     public interface IPlayer
     {
-        Task<IEnumerable<Player>> GetAll();
-        Task<Player> GetByEmail(string Email);
-        Task Add(Player player);
-        Task Update(Player player);
-        Task Delete(string Email);
+        IEnumerable<Player> GetAll();
+        Player GetByEmail(string Email);
+        void Add(Player player);
+        void Update(Player player);
+        void Delete(string Email);
     }
 }

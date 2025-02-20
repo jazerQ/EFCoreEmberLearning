@@ -15,39 +15,41 @@ namespace EFCoreEmber.Repositories
         {
             _context = context;
         }
-        public async Task Add(Player player)
+        public void Add(Player player)
         {
-            await _context.Players.AddAsync(player);
+            _context.Players.Add(player);
+            _context.SaveChanges();
         }
 
-        public async Task Delete(string Email)
+        public void Delete(string Email)
         {
-            await _context.Players.Where(p => p.Email == "Email").ExecuteDeleteAsync();
+            var player = GetByEmail(Email);
+            _context.Players.Remove(player);
         }
 
-        public async Task<IEnumerable<Player>> GetAll()
+        public IEnumerable<Player> GetAll()
         {
-            return await _context.Players.ToListAsync();
+            return _context.Players.ToList();
         }
 
-        public async Task<Player> GetByEmail(string Email)
+        public Player GetByEmail(string Email)
         {
-            var foundPlayer = await _context.Players.FirstOrDefaultAsync(p => p.Email == Email) ?? throw new Exception("I cant find it");
+            var foundPlayer = _context.Players.FirstOrDefault(p => p.Email == Email) ?? throw new Exception("I cant find it");
             return foundPlayer;
         }
 
-        public async Task Update(Player player)
+        public void Update(Player player)
         {
             _context.Entry(player).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
-        public async Task AnotherWayToUpdate(Player player) 
+        public void AnotherWayToUpdate(Player player) 
         {
-            await _context.Players.Where(p => p == player).ExecuteUpdateAsync(pl => pl.SetProperty(pr => pr.Username, player.Username)
+            _context.Players.Where(p => p == player).ExecuteUpdateAsync(pl => pl.SetProperty(pr => pr.Username, player.Username)
                                                                                             .SetProperty(pr => pr.Name, player.Name)
                                                                                             .SetProperty(pr => pr.Email, player.Email)
                                                                                             );
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }
